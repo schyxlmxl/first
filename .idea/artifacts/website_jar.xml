@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="website:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/website_jar</output-path>
+    <root id="archive" name="website.jar">
+      <element id="module-output" name="website" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/web/WEB-INF/lib/mail.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/web/WEB-INF/lib/servlet-api.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/web/WEB-INF/lib/activation-1.1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/web/WEB-INF/lib/commons-io-2.15.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/web/WEB-INF/lib/commons-fileupload-1.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/web/WEB-INF/lib/mysql-connector-j-8.2.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/web/WEB-INF/lib/taglibs-standard-impl-1.2.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/web/WEB-INF/lib/taglibs-standard-spec-1.2.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/web/WEB-INF/lib/commons-fileupload-1.4-tests.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/web/WEB-INF/lib/commons-fileupload-1.4-javadoc.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/web/WEB-INF/lib/commons-fileupload-1.4-sources.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/web/WEB-INF/lib/commons-fileupload-1.4-test-sources.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
