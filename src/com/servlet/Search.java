@@ -2,6 +2,7 @@ package com.servlet;
 
 import com.jdbc.goods;
 import com.jdbc.goodsserver;
+import com.jdbc.logtime;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -24,10 +25,14 @@ public class Search extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException,ServletException {
         response.setContentType("text/html;charset=utf-8");
         //check whether the user is super
+        String user=null;
         String is_super=null;
         Cookie[] cookies=request.getCookies();
         for(int i=0;cookies!=null && i<cookies.length;i++)
         {
+            if("name".equals(cookies[i].getName())) {
+                user = cookies[i].getValue();
+            }
             if("is_super".equals(cookies[i].getName())){
                 is_super=cookies[i].getValue();
             }
@@ -37,6 +42,12 @@ public class Search extends HttpServlet {
         goodsserver gs=new goodsserver();
         ArrayList<goods> goods=gs.searchgoods(name);
         request.setAttribute("goods",goods);
+
+
+        logtime log=new logtime();
+        String act="search";
+        String ip=request.getRemoteAddr();
+        log.addlog(user, act,ip);
         //go to the right page
         if(is_super!=null && is_super.equals("t"))
             request.getRequestDispatcher("manage-page.jsp").include(request,response);

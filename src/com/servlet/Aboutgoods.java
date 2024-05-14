@@ -2,12 +2,14 @@ package com.servlet;
 
 import java.io.*;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jdbc.goods;
 import com.jdbc.goodsserver;
+import com.jdbc.logtime;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.disk.*;
@@ -76,8 +78,20 @@ public class Aboutgoods extends HttpServlet {
         catch (Exception e){throw new RuntimeException(e);
         }
 
-        g.init(map,imgpath);
+        String name=null;
+        Cookie[] cookies=request.getCookies();
+        for(int i=0;cookies!=null && i<cookies.length;i++)
+        {
+            if("name".equals(cookies[i].getName())){
+                name=cookies[i].getValue();
+            }
+        }
+        g.init(map,imgpath,name);
         gs.addgoods(g);
+        logtime log=new logtime();
+        String act="addgoods";
+        String ip=request.getRemoteAddr();
+        log.addlog(name, act,ip);
         response.getWriter().print("<script language='javascript'>alert('添加成功，返回后台管理');window.location.href='./View?is_super=t'</script>");
 
 

@@ -17,6 +17,7 @@ public class pay {
     public int number;
     public int price;
     public String time;
+    public String belong;
     public String img;
 
     public void init(String payer1,String goods1,int id1,int number1,int price1,String time1){
@@ -43,7 +44,8 @@ public class pay {
         return  price;
     }
     public  String getTime(){return  time;}
-    public  String getImg(){return  img;}
+    public  String getBelong(){return  belong;}
+    public String getImg(){return img;}
     public boolean addpay(String payer){
         PreparedStatement pst = null;
         Statement st=null;
@@ -52,12 +54,12 @@ public class pay {
         try {
             con = jdbcmain.getConnction();
             st = con.createStatement();
-            String sql = "SELECT * FROM cart where payer='"+payer+"'";
+            String sql = "SELECT * FROM cart WHERE payer='"+payer+"'";
             rs = st.executeQuery(sql);
             String timenow=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
             while (rs.next()) {
                 pay p = new pay();
-                sql="INSERT INTO pay(payer,goods,id,number,price,time) VALUES(?,?,?,?,?,?)";
+                sql="INSERT INTO pay(payer,goods,id,number,price,time,belong) VALUES(?,?,?,?,?,?,?)";
                 pst = con.prepareStatement(sql);
                 pst.setString(1, rs.getString("payer"));
                 pst.setString(2, rs.getString("goods"));
@@ -65,6 +67,7 @@ public class pay {
                 pst.setInt(4,rs.getInt("number"));
                 pst.setInt(5,rs.getInt("price"));
                 pst.setString(6,timenow);
+                pst.setString(7,rs.getString("belong"));
                 int num = pst.executeUpdate();
                 if (num <= 0) return false;
             }
@@ -101,6 +104,43 @@ public class pay {
                 p.number=rs.getInt("number");
                 p.price=rs.getInt("price");
                 p.time=rs.getString("time");
+                p.belong=rs.getString("belong");
+                paylist.add(p);
+            }
+            return paylist;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                jdbcmain.release(rs, st, con);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    public ArrayList<pay> paylistforseller(String name) {
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        ArrayList<pay> paylist = new ArrayList<pay>();
+        try {
+            con = jdbcmain.getConnction();
+            st = con.createStatement();
+            String sql = "SELECT * FROM pay WHERE belong='"+name+"'";
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                pay p = new pay();
+
+                p.payer = rs.getString("payer");
+                p.goods = rs.getString("goods");
+                p.id = rs.getInt("id");
+                p.number=rs.getInt("number");
+                p.price=rs.getInt("price");
+                p.time=rs.getString("time");
+                p.belong=rs.getString("belong");
                 paylist.add(p);
             }
             return paylist;
@@ -123,13 +163,16 @@ public class pay {
             con = jdbcmain.getConnction();
             goodsserver gs=new goodsserver();
             goods g=gs.searchgoods(id);
-            String sql = "INSERT INTO cart(payer,goods,id,number,price) VALUES(?,?,?,?,?)";
+            String timenow=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
+            String sql = "INSERT INTO cart(payer,goods,id,number,price,belong,time) VALUES(?,?,?,?,?,?,?)";
             pst = con.prepareStatement(sql);
             pst.setString(1, payer);
             pst.setString(2, g.name);
             pst.setInt(3,id);
             pst.setInt(4,1);
             pst.setInt(5,g.price);
+            pst.setString(6,g.belong);
+            pst.setString(7,timenow);
             int num = pst.executeUpdate();
             if (num > 0) return true;
             return false;
@@ -153,7 +196,7 @@ public class pay {
 
             con = jdbcmain.getConnction();
             st = con.createStatement();
-            String sql = "SELECT * FROM cart where payer='"+name+"'";
+            String sql = "SELECT * FROM cart WHERE payer='"+name+"'";
             rs = st.executeQuery(sql);
             while (rs.next()) {
                 pay p = new pay();
@@ -181,6 +224,45 @@ public class pay {
 
         return null;
     }
+    public ArrayList<pay> cartlistforseller(String name) {
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        ArrayList<pay> cartlist = new ArrayList<pay>();
+        try {
+
+            con = jdbcmain.getConnction();
+            st = con.createStatement();
+            String sql = "SELECT * FROM cart WHERE belong='"+name+"'";
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                pay p = new pay();
+
+                p.payer = rs.getString("payer");
+                p.goods = rs.getString("goods");
+                p.id = rs.getInt("id");
+                p.number=rs.getInt("number");
+                p.price=rs.getInt("price");
+                p.time=rs.getString("time");
+                goodsserver gs=new goodsserver();
+                goods g=gs.searchgoods(p.id);
+                p.img=g.img;
+
+                cartlist.add(p);
+            }
+            return cartlist;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                jdbcmain.release(rs, st, con);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
     public boolean updatecart(String payer,int id,int number) {
         PreparedStatement pst = null;
         Connection con = null;
@@ -192,14 +274,14 @@ public class pay {
             //if(number>g.number)return false;
 
             if(number>0){
-                sql = "UPDATE cart SET number=? where payer=? and id=?";
+                sql = "UPDATE cart SET number=? WHERE payer=? AND id=?";
                 pst = con.prepareStatement(sql);
                 pst.setInt(1, number);
                 pst.setString(2,payer);
                 pst.setInt(3,id);
             }
             else{
-                sql="DELETE FROM cart WHERE payer=? and id=?";
+                sql="DELETE FROM cart WHERE payer=? AND id=?";
                 pst = con.prepareStatement(sql);
                 pst.setString(1,payer);
                 pst.setInt(2,id);

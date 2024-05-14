@@ -7,6 +7,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.jdbc.logtime;
 import com.jdbc.userserver;
 import  com.jdbc.user;
 @WebServlet(name = "DeleteAccount", value = "/DeleteAccount")
@@ -35,6 +37,11 @@ public class DeleteAccount extends HttpServlet {
             ck.setMaxAge(-1);
             ck.setPath("/website");
             response.addCookie(ck);
+
+            logtime log=new logtime();
+            String act="deleteaccount";
+            String ip=request.getRemoteAddr();
+            log.addlog(name, act,ip);
             response.getWriter().print("<script language='javascript'>alert('账号已注销，即将返回主页');window.location.href='./View'</script>");
         }
         else{

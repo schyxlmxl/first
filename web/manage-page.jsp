@@ -39,26 +39,20 @@
     <div class="nav">
       <ul>
         <li>
-          <a href="${pageContext.request.contextPath}/View">所有商品</a>
+          <a href="loadseller-page.jsp">账号管理</a>
         </li>
         <li>
-          <a href="javascript:;">商品分类</a>
+          <a href="javascript:;">销售管理</a>
           <ol>
-            <li><a href="${pageContext.request.contextPath}/View?sort=food">食品</a></li>
-            <li><a href="${pageContext.request.contextPath}/View?sort=cloth">服饰</a></li>
-            <li><a href="${pageContext.request.contextPath}/View?sort=elec">电器</a></li>
-            <li><a href="${pageContext.request.contextPath}/View?sort=book">图书</a></li>
+            <li><a href="${pageContext.request.contextPath}/Performance?goal=seller">人员业绩</a></li>
+            <li><a href="${pageContext.request.contextPath}/Performance?goal=goods">销售统计</a></li>
           </ol>
         </li>
         <li>
-          <a href="about-goods.jsp">添加商品</a>
+          <a href="${pageContext.request.contextPath}/View">库存管理</a>
         </li>
         <li>
-          <a href="javascript:;">用户日志</a>
-          <ol>
-            <li><a href="${pageContext.request.contextPath}/View2?goal=log">浏览记录</a></li>
-            <li><a href="${pageContext.request.contextPath}/View2?goal=pay">购买记录</a></li>
-          </ol>
+          <a href="${pageContext.request.contextPath}/View2?goal=log">用户日志</a>
         </li>
         <li>
           <a href="${pageContext.request.contextPath}/Logout">退出登录</a>
@@ -95,14 +89,16 @@
           <c:forEach var="l" items="${loglist}">
             <tr>
               <td>用户：${l[0]}</td>
-              <td>访问网站时间：${l[1]}</td>
+              <td>操作：${l[2]}</td>
+              <td>操作时间：${l[1]}</td>
+              <td>ip:${l[3]}</td>
             </tr>
           </c:forEach>
         </table>
       </c:when>
-      <c:when test="${goal=='pay'}">
+      <c:when test="${goal=='seller'}">
         <table>
-          <c:forEach var="p" items="${paylist}">
+          <c:forEach var="p" items="${loglist}">
             <tr>
               <td>用户：${p.payer}</td>
               <td>购买物品：${p.goods}</td>
@@ -110,6 +106,38 @@
               <td>购买数量：${p.number}</td>
               <td>物品单价：${p.price}</td>
               <td>购买时间：${p.time}</td>
+              <td>销售人：${p.belong}</td>
+            </tr>
+          </c:forEach>
+        </table>
+        <table>
+          <c:forEach var="u" items="${userlist}" varStatus="status">
+            <tr>
+              <td>销售人：${u.name}</td>
+              <td>销售总额：${profit[status.index]}</td>
+            </tr>
+          </c:forEach>
+        </table>
+      </c:when>
+      <c:when test="${goal=='goods'}">
+        <table>
+          <c:forEach var="p" items="${loglist}">
+            <tr>
+              <td>用户：${p.payer}</td>
+              <td>购买物品：${p.goods}</td>
+              <td>物品id：${p.id}</td>>
+              <td>购买数量：${p.number}</td>
+              <td>物品单价：${p.price}</td>
+              <td>购买时间：${p.time}</td>
+              <td>销售人：${p.belong}</td>
+            </tr>
+          </c:forEach>
+        </table>
+        <table>
+          <c:forEach var="s" items="${sortlist}" varStatus="status">
+            <tr>
+              <td>商品分类：${s}</td>>
+              <td>销售总额：${profit[status.index]}</td>
             </tr>
           </c:forEach>
         </table>

@@ -29,9 +29,10 @@ public class Register extends HttpServlet {
                 ck.setMaxAge(60*30);
                 ck.setPath("/website");
                 response.addCookie(ck);
-                String time=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
                 logtime log=new logtime();
-                log.addlog(user.name,time);
+                String act="login";
+                String ip=request.getRemoteAddr();
+                log.addlog(user.name, act,ip);
                 response.getWriter().print("<script language='javascript'>alert('注册成功，点击返回主页');window.location.href='./View'</script>");
             }
             else{

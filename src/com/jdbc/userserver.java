@@ -29,7 +29,32 @@ public class userserver {
         }
         return false;
     }
+    public boolean addseller(user user) {
+        PreparedStatement pst = null;
+        Connection con = null;
+        try {
+            con = jdbcmain.getConnction();
 
+            if(searchuser(user.name)!=null)return false;
+            String sql = "INSERT INTO users(name,password,super) VALUES(?,?,?)";
+            pst = con.prepareStatement(sql);
+            pst.setString(1, user.name);
+            pst.setString(2, user.password);
+            pst.setInt(3, 2);
+            int num = pst.executeUpdate();
+            if (num > 0) return true;
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                jdbcmain.release(pst, con);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
 
     public boolean deleteuser(String name) {
         PreparedStatement pst = null;

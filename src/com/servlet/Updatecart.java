@@ -1,10 +1,12 @@
 package com.servlet;
 
+import com.jdbc.logtime;
 import com.jdbc.pay;
 
 import java.io.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +26,11 @@ doPost(request,response);
         int id= Integer.parseInt(request.getParameter("id"));
         int number= Integer.parseInt(request.getParameter("number"));
         pay p=new pay();
+
+        logtime log=new logtime();
+        String act="deletegoods";
+        String ip=request.getRemoteAddr();
+        log.addlog(payer, act,ip);
         if(p.updatecart(payer,id,number)){
             response.getWriter().print("<script language='javascript'>alert('修改成功，点击返回购物车');window.location.href='./View2?goal=cart'</script>");
         }

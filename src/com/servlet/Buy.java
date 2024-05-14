@@ -7,6 +7,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.jdbc.logtime;
 import com.jdbc.pay;
 import com.jdbc.user;
 import com.jdbc.userserver;
@@ -77,9 +79,17 @@ public class Buy extends HttpServlet {
             } catch (MessagingException e) {
                 throw new RuntimeException(e);
             }
+            logtime log=new logtime();
+            String act="buy";
+            String ip=request.getRemoteAddr();
+            log.addlog(payer, act,ip);
             response.getWriter().print("<script language='javascript'>alert('结账成功！');window.location.href='./View2?goal=cart'</script>");
         }
         else if(del_ok){
+            logtime log=new logtime();
+            String act="cleancart";
+            String ip=request.getRemoteAddr();
+            log.addlog(payer, act,ip);
             response.getWriter().print("<script language='javascript'>alert('已清空购物车！');window.location.href='./View2?goal=cart'</script>");
         }
         else{

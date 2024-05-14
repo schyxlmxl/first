@@ -78,7 +78,14 @@
           </c:choose>
         </li>
         <li>
-          <a href="javascript:;">网站指南</a>
+          <c:choose>
+            <c:when test="${empty cookie.name.value}">
+              <a href="javascript:;">----</a>
+            </c:when>
+            <c:otherwise>
+              <a href="${pageContext.request.contextPath}/Recommand?name=${cookie.name.value}">推荐商品</a>
+            </c:otherwise>
+          </c:choose>
         </li>
         <li>
           <c:choose>

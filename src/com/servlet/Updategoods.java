@@ -1,9 +1,12 @@
 package com.servlet;
 import com.jdbc.goods;
 import com.jdbc.goodsserver;
+import com.jdbc.logtime;
+
 import java.io.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +39,18 @@ public class Updategoods extends HttpServlet {
             g.introduction=request.getParameter("introduction");
             g.price= Integer.parseInt(request.getParameter("price"));
             g.number= Integer.parseInt(request.getParameter("number"));
+            String name=null;
+            Cookie[] cookies=request.getCookies();
+            for(int i=0;cookies!=null && i<cookies.length;i++)
+            {
+                if("name".equals(cookies[i].getName())){
+                    name=cookies[i].getValue();
+                }
+            }
+            logtime log=new logtime();
+            String act="updategoods";
+            String ip=request.getRemoteAddr();
+            log.addlog(name, act,ip);
             if(gs.updategoods(g))
                 response.getWriter().print("<script language='javascript'>alert('修改成功，返回后台管理');window.location.href='./View?is_super=t'</script>");
         }

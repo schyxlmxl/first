@@ -8,14 +8,15 @@ public class goodsserver {
         Connection con = null;
         try {
             con = jdbcmain.getConnction();
-            String sql = "INSERT INTO goods(name,sort,introduction,img,price,number) VALUES(?,?,?,?,?,?)";
+            String sql = "INSERT INTO goods(name,sort,introduction,img,belong,price,number) VALUES(?,?,?,?,?,?,?)";
             pst = con.prepareStatement(sql);
             pst.setString(1, goods.name);
             pst.setString(2, goods.sort);
             pst.setString(3, goods.introduction);
             pst.setString(4, goods.img);
-            pst.setInt(5, goods.price);
-            pst.setInt(6, goods.number);
+            pst.setString(5,goods.belong);
+            pst.setInt(6, goods.price);
+            pst.setInt(7, goods.number);
             int num = pst.executeUpdate();
             if (num > 0) return true;
             return false;
@@ -60,7 +61,7 @@ public class goodsserver {
         Connection con = null;
         try {
             con = jdbcmain.getConnction();
-            String sql = "UPDATE goods SET name=?,introduction=?,price=?,number=? where id=?";
+            String sql = "UPDATE goods SET name=?,introduction=?,price=?,number=? WHERE id=?";
             pst = con.prepareStatement(sql);
             pst.setString(1, goods.name);
             pst.setString(2, goods.introduction);
@@ -104,6 +105,7 @@ public class goodsserver {
                 goods.sort = rs.getString("sort");
                 goods.introduction = rs.getString("introduction");
                 goods.img=rs.getString("img");
+                goods.belong=rs.getString("belong");
                 goods.number=rs.getInt("number");
                 goods.price=rs.getInt("price");
                 goodslist.add(goods);
@@ -130,7 +132,7 @@ public class goodsserver {
         try{
             con=jdbcmain.getConnction();
             st=con.createStatement();
-            String sql="SELECT * FROM goods where name='"+name+"'";
+            String sql="SELECT * FROM goods WHERE name='"+name+"'";
             rs=st.executeQuery(sql);
             while (rs.next()) {
                 goods goods=new goods();
@@ -139,6 +141,7 @@ public class goodsserver {
                 goods.sort = rs.getString("sort");
                 goods.introduction = rs.getString("introduction");
                 goods.img=rs.getString("img");
+                goods.belong=rs.getString("belong");
                 goods.number=rs.getInt("number");
                 goods.price=rs.getInt("price");
                 goodslist.add(goods);
@@ -161,7 +164,7 @@ public class goodsserver {
         try{
             con=jdbcmain.getConnction();
             st=con.createStatement();
-            String sql="SELECT * FROM goods where id="+id;
+            String sql="SELECT * FROM goods WHERE id="+id;
             rs=st.executeQuery(sql);
             while (rs.next()) {
                 goods goods=new goods();
@@ -170,6 +173,7 @@ public class goodsserver {
                 goods.sort = rs.getString("sort");
                 goods.introduction = rs.getString("introduction");
                 goods.img=rs.getString("img");
+                goods.belong=rs.getString("belong");
                 goods.number=rs.getInt("number");
                 goods.price=rs.getInt("price");
                 return goods;

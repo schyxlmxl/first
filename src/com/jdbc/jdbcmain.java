@@ -5,10 +5,10 @@ public class jdbcmain {
         Class.forName("com.mysql.cj.jdbc.Driver");
         String url="jdbc:mysql://localhost:3306/jdbc";
         String user="root";
-        String password="root";
+        String password="rootroot";
         Connection con=DriverManager.getConnection(url,user,password);
         return  con;
-    }
+    }//链接数据库的基本操作
     public static void release(PreparedStatement pst,Connection con)throws SQLException,ClassNotFoundException{
         if(pst!=null){
             try{
@@ -57,4 +57,4 @@ public class jdbcmain {
             con=null;
         }
     }
-}
+}//根据使用到statement还是preparedstatement用不同的函数进行释放资源

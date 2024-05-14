@@ -1,10 +1,12 @@
 package com.servlet;
 
+import com.jdbc.logtime;
 import com.jdbc.pay;
 
 import java.io.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +25,11 @@ doPost(request,response);
         String payer=request.getParameter("payer");
         int id= Integer.parseInt(request.getParameter("id"));
         pay p=new pay();
+
+        logtime log=new logtime();
+        String act="addcart";
+        String ip=request.getRemoteAddr();
+        log.addlog(payer, act,ip);
         if(p.addcart(payer,id)){
             response.getWriter().print("<script language='javascript'>alert('添加成功，点击返回主页');window.location.href='./View'</script>");
         }
